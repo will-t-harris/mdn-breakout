@@ -12,7 +12,7 @@ const createRandomColor = () => {
 let ballColor = createRandomColor();
 const paddleHeight = 10;
 const paddleWidth = 75;
-const paddleX = (canvas.width - paddleWidth) / 2;
+let paddleX = (canvas.width - paddleWidth) / 2;
 let rightPressed = false;
 let leftPressed = false;
 
@@ -35,7 +35,9 @@ const drawPaddle = () => {
 const draw = () => {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	drawBall();
+	drawPaddle();
 
+	// Switch directions if ball hits edge of canvas
 	if (y + dy < ballRadius || y + dy > canvas.height - ballRadius) {
 		ballColor = createRandomColor();
 		dy = -dy;
@@ -48,6 +50,20 @@ const draw = () => {
 
 	x += dx;
 	y += dy;
+
+	// Move paddle depending on which arrow is pressed
+	if (rightPressed) {
+		paddleX += 7;
+		if (paddleX + paddleWidth > canvas.width) {
+			paddleX = canvas.width - paddleWidth;
+		}
+	}
+	if (leftPressed) {
+		paddleX -= 7;
+		if (paddleX < 0) {
+			paddleX = 0;
+		}
+	}
 };
 
 const keydownHandler = (e) => {
