@@ -38,9 +38,17 @@ const draw = () => {
 	drawPaddle();
 
 	// Switch directions if ball hits edge of canvas
-	if (y + dy < ballRadius || y + dy > canvas.height - ballRadius) {
+	if (y + dy < ballRadius) {
 		ballColor = createRandomColor();
 		dy = -dy;
+	} else if (y + dy > canvas.height - ballRadius) {
+		if (x > paddleX && x < paddleX + paddleWidth) {
+			dy = -dy;
+		} else {
+			alert("GAME OVER");
+			document.location.reload();
+			clearInterval(interval);
+		}
 	}
 
 	if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) {
@@ -84,4 +92,5 @@ const keyupHandler = (e) => {
 
 document.addEventListener("keydown", keydownHandler, false);
 document.addEventListener("keyup", keyupHandler, false);
-setInterval(draw, 10);
+
+const interval = setInterval(draw, 10);
